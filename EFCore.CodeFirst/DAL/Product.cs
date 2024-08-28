@@ -11,7 +11,7 @@ namespace EFCore.CodeFirst.DAL
 {
     public class Product
     {
-        
+        // comment test
         public int Id { get; set; }
 
         public string Name { get; set; }
