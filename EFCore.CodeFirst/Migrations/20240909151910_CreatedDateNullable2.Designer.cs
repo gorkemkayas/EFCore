@@ -4,6 +4,7 @@ using EFCore.CodeFirst.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.CodeFirst.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240909151910_CreatedDateNullable2")]
+    partial class CreatedDateNullable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,12 +135,7 @@ namespace EFCore.CodeFirst.Migrations
                     b.Property<int?>("Width")
                         .HasColumnType("int");
 
-                    b.ToTable("ProductFulls", null, t =>
-                        {
-                            t.ExcludeFromMigrations();
-                        });
-
-                    b.ToFunction("fc_product_full");
+                    b.ToTable("ProductFulls");
                 });
 
             modelBuilder.Entity("EFCore.CodeFirst.DAL.Product", b =>

@@ -1,17 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFCore.CodeFirst.DAL
+namespace EFCore.CodeFirst.Models
 {
-    //[Owned]
-    public class Person
+    public class ProductWithFeature
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Phone { get; set; }
+        public int? Width { get; set; }
+        public int? Height { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using EFCore.CodeFirst.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.CodeFirst.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240907120715_AddIsDeletedForProduct")]
+    partial class AddIsDeletedForProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,13 +50,10 @@ namespace EFCore.CodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Barcode")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DiscountPrice")
@@ -110,13 +110,55 @@ namespace EFCore.CodeFirst.Migrations
                     b.ToTable("ProductFeatures");
                 });
 
-            modelBuilder.Entity("EFCore.CodeFirst.DAL.ProductFull", b =>
+            modelBuilder.Entity("EFCore.CodeFirst.Models.ProductEssential", b =>
                 {
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Height")
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToTable("ProductEssentials", null, t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
+
+                    b.ToSqlQuery("select Name,Price From Products");
+                });
+
+            modelBuilder.Entity("EFCore.CodeFirst.Models.ProductFulled", b =>
+                {
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("CategoryName");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ProductName");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
+                    b.ToTable("ProductFulls", null, t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
+
+                    b.ToView("ProductwithFeatures", (string)null);
+                });
+
+            modelBuilder.Entity("EFCore.CodeFirst.Models.ProductWithFeature", b =>
+                {
+                    b.Property<int>("Height")
                         .HasColumnType("int");
 
                     b.Property<int>("Id")
@@ -129,15 +171,10 @@ namespace EFCore.CodeFirst.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("Width")
-                        .HasColumnType("int");
-
-                    b.ToTable("ProductFulls", null, t =>
+                    b.ToTable("ProductWithFeatures", null, t =>
                         {
                             t.ExcludeFromMigrations();
                         });
-
-                    b.ToFunction("fc_product_full");
                 });
 
             modelBuilder.Entity("EFCore.CodeFirst.DAL.Product", b =>
